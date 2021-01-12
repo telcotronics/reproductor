@@ -1,0 +1,132 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package servidorWeb;
+
+/**
+ *
+ * @author pablinux
+ */
+public class ControlWeb {
+
+    String web = "<!DOCTYPE html>\n"
+            + "<html lang=\"en\">\n"
+            + "<head>\n"
+            + "    <meta charset=\"UTF-8\">\n"
+            + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+            + "    <title>Control AUDIO</title>\n"
+            + "    <!-- Compiled and minified CSS -->\n"
+            + "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css\">\n"
+            + "\n"
+            + "    <!-- Compiled and minified JavaScript -->\n"
+            + "    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js\"></script>\n"
+            + "    <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n"
+            + "    <link rel=\"stylesheet\" href=\"https://telcotronics.com/css/audio_control.css\">\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "    <header></header>\n"
+            + "    <container>\n"
+            + "      <div id=\"control\" class=\"control\">\n"
+            + "        <div id=\"display\" class=\"col l8\">\n"
+            + "          <strong>Reproduciendo</strong>\n"
+            + "           Lorem ipsum dolor sit amet consectetur\n"
+            + "           <div id=\"reloj\">12:00:00</div>\n"
+            + "           <span> Trasmitiendo: <i class=\"material-icons left\">speaker_phone</i></span>\n"
+            + "        </div>\n"
+            + "        <div id=\"gp_bt\" class=\"gp_bt_rep\">\n"
+            + "          <div class=\"row\">\n"
+            + "            <div class=\"col l4 m4 s12\">\n"
+            + "              <button class=\"btn_rep btn\"><i class=\"material-icons left\">play_arrow</i>Play</button>\n"
+            + "            </div>\n"
+            + "            <div class=\"col l4 m4 s12\">\n"
+            + "              <button class=\"btn_rep btn\"><i class=\"material-icons left\">pause</i>Pause</button>\n"
+            + "            </div>\n"
+            + "            <div class=\"col l4 m4 s12\">\n"
+            + "              <button class=\"btn_rep btn\"><i class=\"material-icons left\">stop</i>Stop</button>\n"
+            + "            </div>\n"
+            + "            \n"
+            + "          </div>\n"
+            + "          \n"
+            + "        </div>\n"
+            + "      </div>\n"
+            + "\n"
+            + "      <div id=\"control row\">\n"
+            + "        <h3>Control de Audio</h3>\n"
+            + "        <button class=\"btn_ctrl btn col l3 m4 s6\"><i class=\"material-icons left\">power_settings_new</i>Amplificador</button>\n"
+            + "        <button class=\"btn_ctrl btn col l3 m4 s6\"><i class=\"material-icons left\">volume_up</i>PISO 1</button>\n"
+            + "        <button class=\"btn_ctrl btn col l3 m4 s6\"><i class=\"material-icons left\">volume_off</i>PISO 2</button>\n"
+            + "        <button class=\"btn_ctrl btn col l3 m4 s6\"><i class=\"material-icons left\">volume_off</i>PISO 3</button>\n"
+            + "        <button class=\"btn_ctrl btn col l3 m4 s6\"><i class=\"material-icons left\">volume_off</i>PISO 4</button>\n"
+            + "        <button class=\"btn_ctrl btn col l3 m4 s6\"><i class=\"material-icons left\">volume_off</i>OFICINA 4</button>\n"
+            + "      </div>\n"
+            + "\n"
+            + "      <div id=\"categoria\"></div>\n"
+            + "      <div id=\"lista\"></div>\n"
+            + "\n"
+            + "      \n"
+            + "    </container>\n"
+            + "    <footer>\n"
+            + "      \n"
+            + "    </footer>\n"
+            + "</body>\n"
+            + "</html>";
+
+    String css = "@font-face {\n"
+            + "    font-family: Open24Display;\n"
+            + "    src: url(\"../fonts/Open24Display.ttf\");\n"
+            + "}\n"
+            + "@font-face {\n"
+            + "    font-family: Righteous;\n"
+            + "    src: url(\"../fonts/Righteous-Regular.ttf\");\n"
+            + "}\n"
+            + "\n"
+            + ".control {\n"
+            + "    display: grid;\n"
+            + "    grid-template-columns: auto auto;\n"
+            + "    grid-template-rows: auto auto;\n"
+            + "  }\n"
+            + "\n"
+            + "#display{\n"
+            + "    background-color: rgba(0,200,100,.5);\n"
+            + "    height: 118px;\n"
+            + "    background-image: url(\"../img/spectro.gif\");\n"
+            + "    background-repeat: no-repeat;\n"
+            + "    background-position: right;\n"
+            + "    background-size: 80%;\n"
+            + "    font-family: Righteous,serif;\n"
+            + "    margin: 2px;\n"
+            + "\n"
+            + "    grid-column-start: 1;\n"
+            + "    grid-column-end: 3;\n"
+            + "}\n"
+            + "#gp_bt{\n"
+            + "    grid-column-start: 1;\n"
+            + "    grid-column-end: 3;\n"
+            + "}\n"
+            + "#display strong{\n"
+            + "    font-size: 18px;\n"
+            + "}\n"
+            + "#reloj{\n"
+            + "    font-size: 25px;\n"
+            + "    font-family: Open24Display,serif;\n"
+            + "    margin: 5px;\n"
+            + "}\n"
+            + "\n"
+            + ".btn{\n"
+            + "    \n"
+            + "}\n"
+            + ".btn_rep{\n"
+            + "    width: 100%;\n"
+            + "    margin-top: 5px;\n"
+            + "}";
+
+    public String initWeb() {
+        return web;
+    }
+
+    public String css() {
+        return css;
+    }
+}
