@@ -1,6 +1,7 @@
 package reproductor_de_musica;
 
 import Objetos.Info_reproduccion;
+import control.Monitor_control;
 import video.PanelYouTube;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -19,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.management.monitor.Monitor;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -28,7 +30,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import servidorWeb.ServidorHttp;
 
-public class ventana_principal extends javax.swing.JFrame {
+public class Ventana_principal extends javax.swing.JFrame {
 
     private lista list = new lista();
     private nodo actual = null;
@@ -43,7 +45,7 @@ public class ventana_principal extends javax.swing.JFrame {
     DefaultListModel l;
     String temaActual;
 
-    public ventana_principal() {
+    public Ventana_principal() {
         setTitle("Reproductor de musica mp3");
         setResizable(false);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/icono.png"));
@@ -208,8 +210,8 @@ public class ventana_principal extends javax.swing.JFrame {
         jToggleButton1 = new javax.swing.JToggleButton();
         tbt_control = new javax.swing.JToggleButton();
         panel_control = new javax.swing.JPanel();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton3 = new javax.swing.JToggleButton();
+        tbt_ctrl1 = new javax.swing.JToggleButton();
+        tbt_ctrl2 = new javax.swing.JToggleButton();
         jToggleButton4 = new javax.swing.JToggleButton();
         jToggleButton5 = new javax.swing.JToggleButton();
         jToggleButton6 = new javax.swing.JToggleButton();
@@ -383,6 +385,11 @@ public class ventana_principal extends javax.swing.JFrame {
         jToggleButton1.setText("Equalizador");
 
         tbt_control.setText("Control");
+        tbt_control.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbt_controlActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -423,17 +430,47 @@ public class ventana_principal extends javax.swing.JFrame {
 
         panel_control.setBorder(javax.swing.BorderFactory.createTitledBorder("Control"));
 
-        jToggleButton2.setText("Control 1");
+        tbt_ctrl1.setText("Control 1");
+        tbt_ctrl1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbt_ctrl1ActionPerformed(evt);
+            }
+        });
 
-        jToggleButton3.setText("Control 2");
+        tbt_ctrl2.setText("Control 2");
+        tbt_ctrl2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbt_ctrl2ActionPerformed(evt);
+            }
+        });
 
         jToggleButton4.setText("Control 3");
+        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton4ActionPerformed(evt);
+            }
+        });
 
         jToggleButton5.setText("Control 3");
+        jToggleButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton5ActionPerformed(evt);
+            }
+        });
 
         jToggleButton6.setText("Control 4");
+        jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton6ActionPerformed(evt);
+            }
+        });
 
         jToggleButton7.setText("Control 5");
+        jToggleButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton7ActionPerformed(evt);
+            }
+        });
 
         jScrollPane2.setBackground(new java.awt.Color(1, 1, 1));
         jScrollPane2.setForeground(new java.awt.Color(15, 255, 0));
@@ -450,35 +487,33 @@ public class ventana_principal extends javax.swing.JFrame {
         panel_control.setLayout(panel_controlLayout);
         panel_controlLayout.setHorizontalGroup(
             panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_controlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToggleButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane2)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_controlLayout.createSequentialGroup()
+                .addComponent(tbt_ctrl1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tbt_ctrl2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panel_controlLayout.setVerticalGroup(
             panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
             .addGroup(panel_controlLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbt_ctrl1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbt_ctrl2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(203, 212, 221));
@@ -760,10 +795,10 @@ public class ventana_principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panel_control, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel_equalizador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(panel_equalizador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -856,7 +891,7 @@ public class ventana_principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "error al abrir\nla cancion!!!", "alerta", 1);
                 x = 0;
             } catch (MalformedURLException ex) {
-                Logger.getLogger(ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "error al abrir la direccion\nde la cancion!!!", "alerta", 1);
                 x = 0;
             }
@@ -873,7 +908,7 @@ public class ventana_principal extends javax.swing.JFrame {
             jSlider1.setEnabled(false);
             jSlider2.setEnabled(false);
         } catch (BasicPlayerException ex) {
-            Logger.getLogger(ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         detenido = false;
     }//GEN-LAST:event_detenerActionPerformed
@@ -882,7 +917,7 @@ public class ventana_principal extends javax.swing.JFrame {
         try {
             audioPlayer.control.setGain((double) jSlider1.getValue() / 100);
         } catch (BasicPlayerException ex) {
-            Logger.getLogger(ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jSlider1StateChanged
 
@@ -890,7 +925,7 @@ public class ventana_principal extends javax.swing.JFrame {
         try {
             audioPlayer.control.setPan((float) jSlider2.getValue() / 100);
         } catch (BasicPlayerException ex) {
-            Logger.getLogger(ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jSlider2StateChanged
 
@@ -1078,32 +1113,55 @@ public class ventana_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_guardar_listaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        PanelYouTube video = new PanelYouTube();
-        this.dispose();
-        video.setVisible(true);
+        mon.panelYt_init(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    ServidorHttp server = new ServidorHttp();
-    boolean std_web = false;
+    
     private void bt_controlWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_controlWebActionPerformed
-        try {
-            if(!std_web){
-                server.serverConfig(1303);
-                info_cancion.setText(server.iniciarServidor());
-                std_web = false;
-            }else{
-                info_cancion.setText(server.pararServidor());
-                std_web = true;
-            }
-            
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
-        }
+        String msg = mon.initServerWeb(this);
+        jTextArea1.append(msg);
     }//GEN-LAST:event_bt_controlWebActionPerformed
 
+    Monitor_control mon;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        //panel_control.setVisible(false);
+        mon = new Monitor_control();
+        mon.init_panel();
+        String msg = mon.initServerWeb(this);
+        jTextArea1.append("\n"+msg);
     }//GEN-LAST:event_formWindowOpened
+
+    private void tbt_ctrl1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl1ActionPerformed
+        mon.panelYt_verPnl(!tbt_ctrl1.isSelected());
+        /*if(tbt_ctrl1.isSelected()){
+            mon.panelYt_verPnl(tbt_ctrl1.isSelected());
+        }else{
+            mon.panelYt_verPnl(false);
+        }*/
+    }//GEN-LAST:event_tbt_ctrl1ActionPerformed
+
+    private void tbt_ctrl2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl2ActionPerformed
+        mon.panelYt_full(!tbt_ctrl2.isSelected());
+    }//GEN-LAST:event_tbt_ctrl2ActionPerformed
+
+    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton4ActionPerformed
+
+    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton5ActionPerformed
+
+    private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton6ActionPerformed
+
+    private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton7ActionPerformed
+
+    private void tbt_controlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_controlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbt_controlActionPerformed
 
     public void stadoRep(){
         Info_reproduccion info = new Info_reproduccion();
@@ -1132,7 +1190,7 @@ public class ventana_principal extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ventana_principal().setVisible(true);
+                new Ventana_principal().setVisible(true);
             }
         });
     }
@@ -1175,8 +1233,6 @@ public class ventana_principal extends javax.swing.JFrame {
     private javax.swing.JSlider jSlider2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
     private javax.swing.JToggleButton jToggleButton6;
@@ -1198,6 +1254,8 @@ public class ventana_principal extends javax.swing.JFrame {
     private javax.swing.JSlider slidereq8;
     private javax.swing.JSlider slidereq9;
     private javax.swing.JToggleButton tbt_control;
+    private javax.swing.JToggleButton tbt_ctrl1;
+    private javax.swing.JToggleButton tbt_ctrl2;
     private javax.swing.JComboBox tipo_reproduccion;
     // End of variables declaration//GEN-END:variables
 }

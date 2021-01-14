@@ -9,7 +9,9 @@ import ProcesosThreads.MonitorServicios;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +28,8 @@ public class PanelYouTube extends javax.swing.JFrame {
 
     String urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
     DefaultListModel l;
+    
+    int formAnch,formAlto;
 
     /**
      * Creates new form Testing
@@ -35,6 +39,9 @@ public class PanelYouTube extends javax.swing.JFrame {
         player.init(this);
         //ee.init(player.getMediaPlayerFactory(), player.getMediaPlayer(), player.getEqualizer());
         player.prepare(urlVideo);
+        
+        formAnch=this.getWidth();
+        formAlto = this.getHeight();
         //player.play();
     }
 
@@ -48,7 +55,7 @@ public class PanelYouTube extends javax.swing.JFrame {
     private void initComponents() {
 
         player = new com.raven.video_player.VideoPlayer();
-        jPanel1 = new javax.swing.JPanel();
+        panel_listaRep = new javax.swing.JPanel();
         txt_video = new javax.swing.JTextField();
         bt_add = new javax.swing.JButton();
         bt_play = new javax.swing.JButton();
@@ -59,14 +66,14 @@ public class PanelYouTube extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(213, 225, 238));
+        panel_listaRep.setBackground(new java.awt.Color(213, 225, 238));
 
         bt_add.setText("Agregar");
         bt_add.addActionListener(new java.awt.event.ActionListener() {
@@ -117,18 +124,18 @@ public class PanelYouTube extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panel_listaRepLayout = new javax.swing.GroupLayout(panel_listaRep);
+        panel_listaRep.setLayout(panel_listaRepLayout);
+        panel_listaRepLayout.setHorizontalGroup(
+            panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(panel_listaRepLayout.createSequentialGroup()
                 .addComponent(bt_play, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_listaRepLayout.createSequentialGroup()
                 .addComponent(txt_video)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_add, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,17 +143,17 @@ public class PanelYouTube extends javax.swing.JFrame {
                 .addComponent(bt_quitar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        panel_listaRepLayout.setVerticalGroup(
+            panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_listaRepLayout.createSequentialGroup()
+                .addGroup(panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_video, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bt_add)
                     .addComponent(bt_quitar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_play)
                     .addComponent(bt_stop)
                     .addComponent(jButton1))
@@ -161,11 +168,11 @@ public class PanelYouTube extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(player, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panel_listaRep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel_listaRep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(player, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -209,12 +216,12 @@ public class PanelYouTube extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_addActionPerformed
 
     private void bt_quitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_quitarActionPerformed
-        if(list_videos.getModel().getSize()>0){
-            System.out.println(""+list_videos.getSelectedIndex());
-            if(list_videos.getSelectedIndex()!=1){
+        if (list_videos.getModel().getSize() > 0) {
+            System.out.println("" + list_videos.getSelectedIndex());
+            if (list_videos.getSelectedIndex() != 1) {
                 l.remove(list_videos.getSelectedIndex());
                 list_videos.setModel(l);
-            }else{
+            } else {
                 l.remove(0);
                 list_videos.setModel(l);
             }
@@ -229,20 +236,35 @@ public class PanelYouTube extends javax.swing.JFrame {
         verDat();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
-    public void ingreso(){
+    public void fullScreen(boolean siNo) {
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Dimension d = t.getScreenSize();
+        int pantAnch = d.width;
+        int pantAlto = d.height;
+        if(siNo){
+            this.setSize(pantAnch, pantAlto);
+            //this.setExtendedState(MAXIMIZED_BOTH);
+        }else{
+            
+            this.setSize(formAnch, formAlto);
+        }
+        //this.setLocationByPlatform(true);
+    }
+
+    public void ingreso() {
         String consulta = "INSERT INTO AUDIO_CTRL () VALUES ()";
         //Connection conexion = nConexion.conectorMySQL();
-        try{
+        try {
             PreparedStatement ingresoSQL = (PreparedStatement) conectorMySQL().clientPrepareStatement(consulta);
             int resultConsultas = ingresoSQL.executeUpdate();
-            if(resultConsultas>0){
+            if (resultConsultas > 0) {
                 JOptionPane.showMessageDialog(null, "Actualizacion Ingresada");
             }
-        }catch(SQLException | HeadlessException e){
+        } catch (SQLException | HeadlessException e) {
             e.printStackTrace();
         }
     }
+
     private void verDat() {
         //l = (DefaultListModel) list_videos.getModel();
         try {
@@ -259,13 +281,13 @@ public class PanelYouTube extends javax.swing.JFrame {
             System.out.println("Error en la conexion:\n" + e);
         }
     }
-    
+
     String ip = "172.17.0.2";
     String pt = "3306";
-    String usr="admin",pwd="Dx.1706%";
+    String usr = "admin", pwd = "Dx.1706%";
     Connection con;
     String driverMysql = "com.mysql.jdbc.Connection";
-    
+
     public ResultSet consultaBd(String consulta) {
         usr = "admin";
         pwd = "Dx.1706%";
@@ -277,28 +299,39 @@ public class PanelYouTube extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.out.println(ex);
             rs = null;
-        } 
+        }
         return rs;
     }
-    
-    public com.mysql.jdbc.Connection conectorMySQL(){
+
+    public com.mysql.jdbc.Connection conectorMySQL() {
         //System.out.println("SO "+sop+" Host: "+hst+" Plataforma: "+ptf+" User: "+usr+" Pasword: "+pwd+" Puerto: "+prt+" Base Datos: "+bd);
-        String dir_url_MySql="jdbc:mysql://"+ip+":3306/AUDIO_CTRL";
+        String dir_url_MySql = "jdbc:mysql://" + ip + ":3306/AUDIO_CTRL";
         com.mysql.jdbc.Connection conexionMysql = null;
         //System.out.println(sop);
-        String driverMysql="com.mysql.jdbc.Connection";
-        try{//cargamos el driver mysql
+        try {//cargamos el driver mysql
             Class.forName(driverMysql);
             //creamos un enlace a la bd
-            conexionMysql = (com.mysql.jdbc.Connection) DriverManager.getConnection(dir_url_MySql,usr,pwd);
+            conexionMysql = (com.mysql.jdbc.Connection) DriverManager.getConnection(dir_url_MySql, usr, pwd);
             //conexionMysql.close();
             //System.out.print("Conexion MySQL exitosa");
-        }catch(ClassNotFoundException | SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             //ver_error("main.publicarActualizacion.conectorMySQL()",e.getMessage(),e.fillInStackTrace().toString());
         }
         return conexionMysql;
     }
-    
+
+    /******CONTROL REMOTO DE ACCIONE*****/
+    public boolean verPanel(boolean verOculta) {
+        panel_listaRep.setVisible(verOculta);
+        return panel_listaRep.isVisible();
+    }
+    public boolean PLAY() {
+        urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
+        player.prepare(urlVideo);
+        player.play();
+        return true;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -342,9 +375,9 @@ public class PanelYouTube extends javax.swing.JFrame {
     private javax.swing.JButton bt_stop;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> list_videos;
+    private javax.swing.JPanel panel_listaRep;
     private com.raven.video_player.VideoPlayer player;
     private javax.swing.JTextField txt_video;
     // End of variables declaration//GEN-END:variables

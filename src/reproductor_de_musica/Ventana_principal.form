@@ -132,10 +132,10 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panel_control" alignment="0" max="32767" attributes="0"/>
-                  <Component id="panel_equalizador" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                  <Component id="panel_control" alignment="0" max="32767" attributes="0"/>
+                  <Component id="panel_equalizador" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -471,6 +471,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Control"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tbt_controlActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -486,76 +489,88 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="tbt_ctrl1" min="-2" pref="95" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jToggleButton2" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jToggleButton5" min="-2" pref="120" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jToggleButton3" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jToggleButton6" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jToggleButton4" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                      <Component id="jToggleButton7" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                  <Component id="tbt_ctrl2" min="-2" pref="95" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jToggleButton4" min="-2" pref="95" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jToggleButton5" min="-2" pref="95" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jToggleButton6" min="-2" pref="95" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jToggleButton7" min="-2" pref="95" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane2" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
+                  <Component id="jScrollPane2" min="-2" pref="84" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jToggleButton2" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="jToggleButton3" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="jToggleButton4" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
+                      <Component id="jToggleButton5" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="jToggleButton6" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="jToggleButton7" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="jToggleButton4" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="tbt_ctrl1" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="tbt_ctrl2" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jToggleButton5" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="jToggleButton6" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="jToggleButton7" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JToggleButton" name="jToggleButton2">
+        <Component class="javax.swing.JToggleButton" name="tbt_ctrl1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Control 1"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tbt_ctrl1ActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JToggleButton" name="jToggleButton3">
+        <Component class="javax.swing.JToggleButton" name="tbt_ctrl2">
           <Properties>
             <Property name="text" type="java.lang.String" value="Control 2"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tbt_ctrl2ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="jToggleButton4">
           <Properties>
             <Property name="text" type="java.lang.String" value="Control 3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton4ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="jToggleButton5">
           <Properties>
             <Property name="text" type="java.lang.String" value="Control 3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton5ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="jToggleButton6">
           <Properties>
             <Property name="text" type="java.lang.String" value="Control 4"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton6ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="jToggleButton7">
           <Properties>
             <Property name="text" type="java.lang.String" value="Control 5"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton7ActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <Properties>
