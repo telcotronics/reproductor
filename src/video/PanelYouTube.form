@@ -54,13 +54,6 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="jScrollPane2" pref="352" max="32767" attributes="0"/>
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="bt_play" min="-2" pref="117" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="bt_stop" min="-2" pref="111" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton1" max="32767" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <Component id="txt_video" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -68,7 +61,21 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="bt_quitar" min="-2" pref="66" max="-2" attributes="0"/>
               </Group>
-              <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="bt_play" min="-2" pref="117" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="bt_stop" min="-2" pref="111" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="bt_sig" max="32767" attributes="0"/>
+                      <Component id="bt_actListRep" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -85,10 +92,13 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="bt_play" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="bt_stop" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="bt_sig" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="bt_actListRep" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -106,6 +116,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="bt_play">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/iconos/play.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Play"/>
           </Properties>
           <Events>
@@ -123,13 +136,16 @@
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="4">
-                    <StringItem index="0" value="https://www.youtube.com/watch?v=ZpsV5SGa5R4"/>
-                    <StringItem index="1" value="https://www.youtube.com/watch?v=-RkQDlUV4Fc"/>
-                    <StringItem index="2" value="https://www.youtube.com/watch?v=BXu1AUar2VY&amp;ab_channel=TropicalHouseRadio"/>
-                    <StringItem index="3" value=" "/>
+                    <StringItem index="0" value="https://www.youtube.com/watch?v=MM0lWsvieaE"/>
+                    <StringItem index="1" value="https://www.youtube.com/watch?v=ZpsV5SGa5R4"/>
+                    <StringItem index="2" value="https://www.youtube.com/watch?v=-RkQDlUV4Fc"/>
+                    <StringItem index="3" value="https://www.youtube.com/watch?v=BXu1AUar2VY&amp;ab_channel=TropicalHouseRadio"/>
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="list_videosMouseClicked"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -138,6 +154,9 @@
         </Container>
         <Component class="javax.swing.JButton" name="bt_stop">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/iconos/anterior.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Stop"/>
           </Properties>
           <Events>
@@ -152,12 +171,15 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_quitarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="bt_sig">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/iconos/siguiente.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Siguiente"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_sigActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
@@ -166,6 +188,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="bt_actListRep">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Act List Rep"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_actListRepActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

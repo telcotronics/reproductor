@@ -28,8 +28,9 @@ public class PanelYouTube extends javax.swing.JFrame {
 
     String urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
     DefaultListModel l;
-    
-    int formAnch,formAlto;
+
+    int formAnch, formAlto;
+    private int indx_repVideo = 0;
 
     /**
      * Creates new form Testing
@@ -39,8 +40,8 @@ public class PanelYouTube extends javax.swing.JFrame {
         player.init(this);
         //ee.init(player.getMediaPlayerFactory(), player.getMediaPlayer(), player.getEqualizer());
         player.prepare(urlVideo);
-        
-        formAnch=this.getWidth();
+
+        formAnch = this.getWidth();
         formAlto = this.getHeight();
         //player.play();
     }
@@ -63,8 +64,9 @@ public class PanelYouTube extends javax.swing.JFrame {
         list_videos = new javax.swing.JList<>();
         bt_stop = new javax.swing.JButton();
         bt_quitar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        bt_sig = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        bt_actListRep = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -82,6 +84,7 @@ public class PanelYouTube extends javax.swing.JFrame {
             }
         });
 
+        bt_play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/play.png"))); // NOI18N
         bt_play.setText("Play");
         bt_play.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,12 +93,18 @@ public class PanelYouTube extends javax.swing.JFrame {
         });
 
         list_videos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "https://www.youtube.com/watch?v=ZpsV5SGa5R4", "https://www.youtube.com/watch?v=-RkQDlUV4Fc", "https://www.youtube.com/watch?v=BXu1AUar2VY&ab_channel=TropicalHouseRadio", " " };
+            String[] strings = { "https://www.youtube.com/watch?v=MM0lWsvieaE", "https://www.youtube.com/watch?v=ZpsV5SGa5R4", "https://www.youtube.com/watch?v=-RkQDlUV4Fc", "https://www.youtube.com/watch?v=BXu1AUar2VY&ab_channel=TropicalHouseRadio" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        list_videos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                list_videosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(list_videos);
 
+        bt_stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/anterior.png"))); // NOI18N
         bt_stop.setText("Stop");
         bt_stop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,10 +119,11 @@ public class PanelYouTube extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Siguiente");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bt_sig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/siguiente.png"))); // NOI18N
+        bt_sig.setText("Siguiente");
+        bt_sig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_sigActionPerformed(evt);
             }
         });
 
@@ -124,24 +134,35 @@ public class PanelYouTube extends javax.swing.JFrame {
             }
         });
 
+        bt_actListRep.setText("Act List Rep");
+        bt_actListRep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_actListRepActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_listaRepLayout = new javax.swing.GroupLayout(panel_listaRep);
         panel_listaRep.setLayout(panel_listaRepLayout);
         panel_listaRepLayout.setHorizontalGroup(
             panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
-            .addGroup(panel_listaRepLayout.createSequentialGroup()
-                .addComponent(bt_play, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bt_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_listaRepLayout.createSequentialGroup()
                 .addComponent(txt_video)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_add, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_quitar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panel_listaRepLayout.createSequentialGroup()
+                .addGroup(panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_listaRepLayout.createSequentialGroup()
+                        .addComponent(bt_play, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bt_stop, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bt_sig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_actListRep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         panel_listaRepLayout.setVerticalGroup(
             panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,9 +177,11 @@ public class PanelYouTube extends javax.swing.JFrame {
                 .addGroup(panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_play)
                     .addComponent(bt_stop)
-                    .addComponent(jButton1))
+                    .addComponent(bt_sig))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2))
+                .addGroup(panel_listaRepLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(bt_actListRep)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -180,15 +203,22 @@ public class PanelYouTube extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void bt_playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_playActionPerformed
-        if (list_videos.getModel().getSize() > 0) {
-            urlVideo = list_videos.getSelectedValue();
+        if (bt_play.getText().equals("Play")) {
             if (list_videos.getSelectedIndex() != -1) {
-                System.out.println("" + urlVideo);
+                urlVideo = list_videos.getModel().getElementAt(list_videos.getSelectedIndex());
                 player.prepare(urlVideo);
                 player.play();
+                stdRep = "play";
+            } else {
+                PLAY();
             }
-            //
+            bt_play.setText("Pause");
+        } else {
+            stdRep = "pause";
+            player.pause();
+            bt_play.setText("Play");
         }
     }//GEN-LAST:event_bt_playActionPerformed
 
@@ -204,7 +234,7 @@ public class PanelYouTube extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void bt_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_stopActionPerformed
-        player.pause();
+        ANTERIOR();
     }//GEN-LAST:event_bt_stopActionPerformed
 
     private void bt_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addActionPerformed
@@ -232,20 +262,34 @@ public class PanelYouTube extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        verDat();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void bt_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_sigActionPerformed
+        SIGUIENTE();
+    }//GEN-LAST:event_bt_sigActionPerformed
+
+    private void bt_actListRepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_actListRepActionPerformed
+        act_listRep();
+    }//GEN-LAST:event_bt_actListRepActionPerformed
+
+    private void list_videosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list_videosMouseClicked
+        if (list_videos.getModel().getSize() > 0) {
+            if (list_videos.getSelectedIndex() != -1) {
+                urlVideo = list_videos.getSelectedValue();
+                indx_repVideo = list_videos.getSelectedIndex();
+                System.out.println("" + urlVideo);
+            }
+        }
+    }//GEN-LAST:event_list_videosMouseClicked
 
     public void fullScreen(boolean siNo) {
         Toolkit t = Toolkit.getDefaultToolkit();
         Dimension d = t.getScreenSize();
         int pantAnch = d.width;
         int pantAlto = d.height;
-        if(siNo){
+        if (siNo) {
             this.setSize(pantAnch, pantAlto);
             //this.setExtendedState(MAXIMIZED_BOTH);
-        }else{
-            
+        } else {
+
             this.setSize(formAnch, formAlto);
         }
         //this.setLocationByPlatform(true);
@@ -265,19 +309,19 @@ public class PanelYouTube extends javax.swing.JFrame {
         }
     }
 
-    private void verDat() {
+    private void act_listRep() {
         //l = (DefaultListModel) list_videos.getModel();
         try {
             ResultSet rs = consultaBd("SELECT * FROM AUDIO_CTRL.rep_youtube;");
-            l.removeAllElements();
+            list_videos.removeAll();
+            l.clear();
             while (rs.next()) {
                 l.addElement(rs.getString(2));
             }
             list_videos.setModel(l);
         } catch (SQLException e) {
-            System.out.println("Error en la conexion:\n" + e);
+            System.out.println("Error SQl:\n" + e);
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Error en la conexion:\n" + e);
         }
     }
@@ -320,16 +364,71 @@ public class PanelYouTube extends javax.swing.JFrame {
         return conexionMysql;
     }
 
-    /******CONTROL REMOTO DE ACCIONE*****/
+    /**
+     * ****CONTROL REMOTO DE ACCIONE****
+     */
     public boolean verPanel(boolean verOculta) {
         panel_listaRep.setVisible(verOculta);
         return panel_listaRep.isVisible();
     }
+
+    String stdRep = "stop";
+
     public boolean PLAY() {
-        urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
-        player.prepare(urlVideo);
-        player.play();
+        if (stdRep.equals("stop")) {
+            if (list_videos.getModel().getSize() > 0) {
+                urlVideo = list_videos.getModel().getElementAt(indx_repVideo);
+                player.prepare(urlVideo);
+                player.play();
+            } else {
+                urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
+                player.prepare(urlVideo);
+                player.play();
+            }
+            bt_play.setText("Play");
+        }else if (stdRep.equals("pausa")) {
+            player.play();
+        }
+
+        System.out.println("" + urlVideo);
         return true;
+    }
+
+    public boolean STOP() {
+        player.prepare(urlVideo);
+        player.pause();
+        bt_play.setText("Play");
+        return true;
+    }
+
+    public boolean PAUSE(boolean pause) {
+        player.pause();
+        bt_play.setText("Pause");
+        return true;
+    }
+
+    public void SIGUIENTE() {
+        if (indx_repVideo < list_videos.getModel().getSize()) {
+//            System.out.println("IDX cont: "+indx_repVideo+" IDX Lista "+list_videos.getModel().getSize());
+            indx_repVideo++;
+            urlVideo = list_videos.getModel().getElementAt(indx_repVideo);
+            System.out.println(urlVideo);
+            PLAY();
+        }
+    }
+
+    public void ANTERIOR() {
+        if (indx_repVideo > 0) {
+            System.out.println("IDX cont: "+indx_repVideo+" IDX Lista "+list_videos.getModel().getSize());            
+            indx_repVideo--;
+            urlVideo = list_videos.getModel().getElementAt(indx_repVideo);
+            System.out.println(urlVideo);
+            PLAY();
+        }
+    }
+
+    public void ACT_LISTA() {
+        act_listRep();
     }
 
     /**
@@ -369,11 +468,12 @@ public class PanelYouTube extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_actListRep;
     private javax.swing.JButton bt_add;
     private javax.swing.JButton bt_play;
     private javax.swing.JButton bt_quitar;
+    private javax.swing.JButton bt_sig;
     private javax.swing.JButton bt_stop;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> list_videos;

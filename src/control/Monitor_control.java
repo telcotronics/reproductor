@@ -57,11 +57,7 @@ public class Monitor_control {
     boolean stdYt=false;
     public boolean panelYt_init(boolean STD){
         System.out.println(pyt.isActive());
-        if(!stdYt){
-            pyt.setVisible(STD);
-        }else{
-            pyt.setVisible(STD);
-        }
+        pyt.setVisible(STD);
         return pyt.isActive();
     }
     public boolean panelYt_verPnl(boolean STD){
@@ -74,7 +70,27 @@ public class Monitor_control {
         pyt.fullScreen(pantComplt);
     }
     public void panelYt_play(){
-        //pyt.setUndecorated(pantComplt);
+        pyt.PLAY();
+    }
+    public void panelYt_stop(){
+        pyt.STOP();
+    }
+    public void panelYt_pause(){
+        pyt.PAUSE(true);
+    }
+    public void panelYt_siguiente(){
+        pyt.SIGUIENTE();
+    }
+    public void panelYt_anterior(){
+        pyt.ANTERIOR();
+    }
+    public void panelYt_actLista(){
+        pyt.ACT_LISTA();
+    }
+    
+    
+    
+    public void panelMp3_play(){
         pyt.PLAY();
     }
     
@@ -105,17 +121,19 @@ public class Monitor_control {
             try {
                 String cmd = server.acciones_leer();
                 accionesRemotas(cmd);
-                //System.out.println("Leyendo Servidor: "+cmd);
+//                System.out.println("Leyendo Servidor: "+cmd);
                 server.acciones_limpia();
             } catch (Exception e) {
-                System.out.println("produccionE_inventario.Inventario.Proceso2.run()"+e.getMessage());
+                System.out.println("Error en: control.Monitor_control.ThreadEscucharServWeb.run()\n"+e.getMessage());
             }
         }
-        
     }
+    
+    String[] mode = {"youtube","mp3"};
     private void accionesRemotas(String cmd){
+        
         switch(cmd){
-            case "reproducir" : 
+            case "reproducir" : panelMp3_play();
                 break;
             case "pausar" : 
                 break;
@@ -125,17 +143,31 @@ public class Monitor_control {
                 break;
             case "atras" : 
                 break;
-            case "verPanel" : 
+            case "panel_listaRepOn" : panelYt_verPnl(true);
                 break;
-            case "ocultaPanel" : 
+            case "panel_listaRepOf" : panelYt_verPnl(false);
                 break;
             case "redimensiona" : 
                 break;
-            case "fullScreen" : 
+            case "fullScreenOn" :panelYt_full(true); 
                 break;
-            case "ver_video" : panelYt_init(true);
+            case "fullScreenOf" :panelYt_full(false); 
+                break;
+            case "ver_videoOn" : panelYt_init(true);
+                break;
+            case "ver_videoOf" : panelYt_init(false);
                 break;
             case "play_video" : panelYt_play();
+                break;
+            case "pausa_video" : panelYt_pause();
+                break;
+            case "stop_video" : panelYt_stop();
+                break;
+            case "siguiente_video" : panelYt_siguiente();
+                break;
+            case "anterior_video" : panelYt_anterior();
+                break;
+            case "actualiza_lista" : panelYt_actLista();
                 break;
         }
     }

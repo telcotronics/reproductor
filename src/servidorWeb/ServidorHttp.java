@@ -114,14 +114,34 @@ public class ServidorHttp{
                 break;
             case "redimensiona" : 
                 break;
-            case "fullScreen" : 
+            
+            case "ver_videoOn" : accion="ver_videoOn";
                 break;
-            case "ver_video" : accion="ver_video";
+            case "ver_videoOf" : accion="ver_videoOf";
+                break;
+            case "panel_listRepOn" : accion="panel_listaRepOn";
+                break;
+            case "panel_listRepOf" : accion="panel_listaRepOf";
+                break;
+            case "video_fullScreenOn" : accion="fullScreenOn";
+                break;
+            case "video_fullScreenOf" : accion="fullScreenOf";
                 break;
             case "play_video" : accion="play_video";
                 break;
+            case "pausa_video" : accion="pausa_video";
+                break;
+            case "stop_video" : accion="stop_video";
+                break;
+            case "next_video" : accion="siguiente_video";
+                break;
+            case "prev_video" : accion="anterior_video";
+                break;
+            
+            case "update_list" : accion="actualiza_lista";
+                break;
         }
-        System.out.println(accion);
+        System.out.println("ServidorHttp: "+accion);
         String contenido = enviaJson("cmd",filtraDat);
         
         exchange.getResponseHeaders().set("Content-Type", "application/json, charset=UTF-8");
