@@ -5,14 +5,17 @@
  */
 package servidorWeb;
 
+import Objetos.Obj_listRepYT;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import control.Extractor_json;
 import control.Monitor_control;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.List;
 import okhttp3.HttpUrl;
 import video.PanelYouTube;
 
@@ -163,10 +166,15 @@ public class ServidorHttp{
         os.write(contenido.getBytes());
         os.close();
     }
+    
+    static  List objListYt;
     public static void solicitudInfo(HttpExchange exchange) throws IOException{
+        Extractor_json json = new Extractor_json();
         final int CODIGO_RESPUESTA = 200;
-        String filtro = filtrarSolicitud(exchange, "info");
-        String contenido = enviaJson("info",filtro);
+        String filtro = filtrarSolicitud(exchange, "lista_reproduccion");
+        objListYt = json.extraerListaRepYt(filtro);
+        String contenido = enviaJson("info","ok");
+        //System.out.println("Recibido:"+filtro);
         
         exchange.getResponseHeaders().set("Content-Type", "application/json, charset=UTF-8");
         
@@ -216,6 +224,12 @@ public class ServidorHttp{
     }
     public void acciones_limpia(){
         accion="";
+    }
+    public List verListaRep(){
+        return objListYt;
+    }
+    public void cleanListaRep(){
+        objListYt = null;
     }
 //    @Override
 //    public boolean panelYt_init(boolean STD) {

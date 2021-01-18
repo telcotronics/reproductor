@@ -28,6 +28,8 @@ public class VideoPlayer extends javax.swing.JPanel {
     private Event finishEvent;
     private boolean finisOK;
     private EventTransferHandler eventDropFile;
+    
+    private long duracion=0;
 
     public VideoPlayer() {
         initComponents();
@@ -90,6 +92,7 @@ public class VideoPlayer extends javax.swing.JPanel {
             public void lengthChanged(MediaPlayer media, long newLength) {
                 time = convertSecondsToHMmSs(newLength);
                 progressBar.setMaximum((int) newLength);
+                duracion = newLength;
                 showTime("0:00");
                 cmdPlay.setIcon(new ImageIcon(getClass().getResource("/com/raven/video_player/pause.png")));
                 cmdPlay.setName("Play");
@@ -480,6 +483,13 @@ public class VideoPlayer extends javax.swing.JPanel {
         mediaPlayer.controls().stop();
         mediaPlayer.release();
         factory.release();
+    }
+    public int verProgreso(){
+        return progressBar.getValue();
+    }
+    
+    public long verTiempoDuracion(){
+        return duracion;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,9 +5,11 @@
  */
 package control;
 
+import Objetos.Obj_listRepYT;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import reproductor_de_musica.Ventana_principal;
@@ -123,6 +125,7 @@ public class Monitor_control {
                 accionesRemotas(cmd);
 //                System.out.println("Leyendo Servidor: "+cmd);
                 server.acciones_limpia();
+                addListRep();
             } catch (Exception e) {
                 System.out.println("Error en: control.Monitor_control.ThreadEscucharServWeb.run()\n"+e.getMessage());
             }
@@ -170,5 +173,18 @@ public class Monitor_control {
             case "actualiza_lista" : panelYt_actLista();
                 break;
         }
+    }
+    //Obj_listRepYT obj = new Obj_listRepYT();
+    List lista_repYt;
+    private void addListRep(){
+        if(server.verListaRep()!=null){
+            lista_repYt = server.verListaRep();
+//            System.out.println("Tiene Datos");
+            pyt.INGRESA_LISTA(lista_repYt);
+            server.cleanListaRep();
+        }
+//        else{
+//            System.out.println("Vacio");
+//        }
     }
 }
