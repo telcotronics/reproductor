@@ -9,9 +9,11 @@ import Objetos.Obj_listRepYT;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import jssc.SerialPortEventListener;
 import reproductor_de_musica.Ventana_principal;
 import servidorWeb.ServidorHttp;
 import video.PanelYouTube;
@@ -26,6 +28,7 @@ public class Monitor_control {
     PanelYouTube pyt;
     ServidorHttp web;
     ServidorHttp server = new ServidorHttp();
+    Comunicacion_ArduinoPHtek com = new Comunicacion_ArduinoPHtek();
     public boolean init_panel(){
         mp3 = new Ventana_principal();
         pyt = new PanelYouTube();
@@ -89,9 +92,6 @@ public class Monitor_control {
     public void panelYt_actLista(){
         pyt.ACT_LISTA();
     }
-    
-    
-    
     public void panelMp3_play(){
         pyt.PLAY();
     }
@@ -125,13 +125,18 @@ public class Monitor_control {
                 accionesRemotas(cmd);
 //                System.out.println("Leyendo Servidor: "+cmd);
                 server.acciones_limpia();
-                addListRep();
+                addListRep();//agrega lista re reproduccion
+                addStatusRep();//lee estado de reproduccion
+                nivel_vol();//lee el nivel de audio
             } catch (Exception e) {
                 System.out.println("Error en: control.Monitor_control.ThreadEscucharServWeb.run()\n"+e.getMessage());
             }
         }
     }
     
+    public void envioDato(String cmd){
+        accionesRemotas(cmd);
+    }
     String[] mode = {"youtube","mp3"};
     private void accionesRemotas(String cmd){
         
@@ -149,8 +154,6 @@ public class Monitor_control {
             case "panel_listaRepOn" : panelYt_verPnl(true);
                 break;
             case "panel_listaRepOf" : panelYt_verPnl(false);
-                break;
-            case "redimensiona" : 
                 break;
             case "fullScreenOn" :panelYt_full(true); 
                 break;
@@ -172,6 +175,48 @@ public class Monitor_control {
                 break;
             case "actualiza_lista" : panelYt_actLista();
                 break;
+            
+            case "ctrl_iniSerial" : initConexionSerial();
+                break;
+            case "ctrl_finSerial" : cierraConexionSerial();
+                break;
+            case "ctrl_p1=1" : com.envioDato("A");
+                break;
+            case "ctrl_p1=0" : com.envioDato("a");
+                break;
+            case "ctrl_p2=1" : com.envioDato("B");
+                break;
+            case "ctrl_p2=0" : com.envioDato("b");
+                break;
+            case "ctrl_p3=1" : com.envioDato("C");
+                break;
+            case "ctrl_p3=0" : com.envioDato("c");
+                break;
+            case "ctrl_p4=1" : com.envioDato("D");
+                break;
+            case "ctrl_p4=0" : com.envioDato("d");
+                break;
+            case "ctrl_p5=1" : com.envioDato("E");
+                break;
+            case "ctrl_p5=0" : com.envioDato("e");
+                break;
+            case "ctrl_p6=1" : com.envioDato("F");
+                break;
+            case "ctrl_p6=0" : com.envioDato("f");
+                break;
+            case "ctrl_p7=1" : com.envioDato("G");
+                break;
+            case "ctrl_p7=0" : com.envioDato("g");
+                break;
+            case "ctrl_p8=1" : com.envioDato("H");
+                break;
+            case "ctrl_p8=0" : com.envioDato("h");
+                break;
+        }
+        if(cmd.contains("ctrl_port")){
+            String port = cmd.substring(10, cmd.length());
+            System.out.println("El Puerto es: "+port);
+            setPuerto(port);
         }
     }
     //Obj_listRepYT obj = new Obj_listRepYT();
@@ -183,8 +228,39 @@ public class Monitor_control {
             pyt.INGRESA_LISTA(lista_repYt);
             server.cleanListaRep();
         }
-//        else{
-//            System.out.println("Vacio");
-//        }
     }
+    
+    private void addStatusRep(){
+        server.estadoReproductor(pyt.leer_estadoRep());
+    }
+    
+    private void nivel_vol(){
+        if(server.isControlVolumen()){
+            System.out.println("Nivel Audio:"+server.nivel_vol());
+            pyt.setNivelVol(server.nivel_vol());
+        }
+    }
+    private void leeErrores(){
+        
+    }
+    
+    //****CONTROL ARDUINO****//
+    String puerto;
+    private void setPuerto(String NomPuerto){
+        puerto = NomPuerto;
+    }
+    private void initConexionSerial(){
+        System.out.println("Inicado Conexion: "+puerto);
+        com.initComunicacion(puerto, 9600, com.getListener());
+    }
+    public List ListaPuertos(){
+        List puertos =new ArrayList();
+        puertos=com.verificaPuertos();
+        server.setListaPuertos(puertos);
+        return puertos;
+    }
+    public boolean cierraConexionSerial(){
+        return com.finComunicacion();
+    }
+    
 }

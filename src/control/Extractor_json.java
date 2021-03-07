@@ -5,7 +5,9 @@
  */
 package control;
 
+import Objetos.Obj_estadRep;
 import Objetos.Obj_listRepYT;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import objetos.JsonControl;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -23,7 +26,7 @@ import objetos.JsonControl;
 public class Extractor_json {
 
     JsonControl jsonCtrl = new JsonControl();
-    
+
     public List extraerListaRepYt(String datConsulta) {
         List<Object> lista = new ArrayList();
         Obj_listRepYT obj_yt;// = new Obj_listRepYT();
@@ -44,5 +47,16 @@ public class Extractor_json {
             lista.add(obj_yt);
         }
         return lista;
+    }
+
+    //Obj_estadRep obj_stdRep;
+
+    public String json_estado_reproductor(Obj_estadRep obj) {
+        //obj_stdRep = obj;
+        Gson aJson = new Gson();
+        String json = aJson.toJson(obj);
+        System.out.println(json);
+
+        return json;
     }
 }

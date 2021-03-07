@@ -30,6 +30,7 @@ public class VideoPlayer extends javax.swing.JPanel {
     private EventTransferHandler eventDropFile;
     
     private long duracion=0;
+    private int nivelVol=0;
 
     public VideoPlayer() {
         initComponents();
@@ -104,6 +105,8 @@ public class VideoPlayer extends javax.swing.JPanel {
                 pbVolum.setValue(mediaPlayer.audio().volume());
                 lastVolum = pbVolum.getValue();
                 finisOK = true;
+                
+                nivelVol = lastVolum;//ver nivel volumen
             }
 
             @Override
@@ -401,6 +404,7 @@ public class VideoPlayer extends javax.swing.JPanel {
     private void pbVolumMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pbVolumMousePressed
         if (pbVolum.getValue() != 0) {
             lastVolum = pbVolum.getValue();
+            nivelVol = lastVolum;
         }
     }//GEN-LAST:event_pbVolumMousePressed
 
@@ -491,6 +495,20 @@ public class VideoPlayer extends javax.swing.JPanel {
     public long verTiempoDuracion(){
         return duracion;
     }
+    
+    public int verNivelVolumen(){
+        return nivelVol;
+    }
+    public boolean setNivelVolAudio(int nivel){
+        try{
+            nivelVol = nivel;
+            mediaPlayer.audio().setVolume(nivel);
+            pbVolum.setValue(nivel);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel border;
@@ -511,5 +529,23 @@ public class VideoPlayer extends javax.swing.JPanel {
 
     public void setEventDropFile(EventTransferHandler eventDropFile) {
         this.eventDropFile = eventDropFile;
+    }
+    
+    public boolean FinReproduccion(){
+        return isFinish;
+    }
+    public boolean setStopReproduccion(){
+        try{
+            finishEvent.finish();
+            
+        }catch(Exception w){
+            error=""+w.getMessage();
+        } 
+       return isFinish;
+    }
+    
+    String error;
+    public String error(){
+        return error;
     }
 }

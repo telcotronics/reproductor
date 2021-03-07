@@ -11,6 +11,7 @@ import ProcesosThreads.MonitorServicios;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import com.raven.video_player.VideoPlayer;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -97,7 +98,7 @@ public class PanelYouTube extends javax.swing.JFrame {
         });
 
         list_videos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "https://www.youtube.com/watch?v=MM0lWsvieaE", "https://www.youtube.com/watch?v=ZpsV5SGa5R4", "https://www.youtube.com/watch?v=-RkQDlUV4Fc", "https://www.youtube.com/watch?v=BXu1AUar2VY&ab_channel=TropicalHouseRadio" };
+            String[] strings = { "https://www.youtube.com/watch?v=MM0lWsvieaE", "https://www.youtube.com/watch?v=ZpsV5SGa5R4", "https://www.youtube.com/watch?v=-RkQDlUV4Fc", "https://www.youtube.com/watch?v=BXu1AUar2VY", "https://www.youtube.com/watch?v=HJ4GvRbIlTA" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -296,11 +297,13 @@ public class PanelYouTube extends javax.swing.JFrame {
     }//GEN-LAST:event_list_videosMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int time = player.verProgreso();
-        System.out.println(time);
-        System.out.println(player.convertSecondsToHMmSs(time));;
-        System.out.println(player.verTiempoDuracion());
-        System.out.println(player.convertSecondsToHMmSs(player.verTiempoDuracion()));;
+//        int time = player.verProgreso();
+//        System.out.println(time);
+//        System.out.println(player.convertSecondsToHMmSs(time));;
+//        System.out.println(player.verTiempoDuracion());
+//        System.out.println(player.convertSecondsToHMmSs(player.verTiempoDuracion()));
+        
+        System.out.println(this.isVisible());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     boolean stdoFS=false;
@@ -405,16 +408,18 @@ public class PanelYouTube extends javax.swing.JFrame {
                 urlVideo = list_videos.getModel().getElementAt(indx_repVideo);
                 player.prepare(urlVideo);
                 player.play();
+                stdRep="play";
             } else {
                 urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
                 player.prepare(urlVideo);
                 player.play();
+                stdRep="play";
             }
-            bt_play.setText("Play");
+            bt_play.setText("Pausa");
         }else if (stdRep.equals("pausa")) {
             player.play();
+            bt_play.setText("Pausa");
         }
-
         System.out.println("" + urlVideo);
         return true;
     }
@@ -422,17 +427,20 @@ public class PanelYouTube extends javax.swing.JFrame {
     public boolean STOP() {
         player.prepare(urlVideo);
         player.pause();
+        
+        //player = new VideoPlayer();
         //bt_play.setText("Play");
         return true;
     }
 
     public boolean PAUSE(boolean pause) {
         player.pause();
-        bt_play.setText("Pause");
+        bt_play.setText("Play");
         return true;
     }
 
     public void SIGUIENTE() {
+        stdRep = "stop";
         if (indx_repVideo < list_videos.getModel().getSize()) {
 //            System.out.println("IDX cont: "+indx_repVideo+" IDX Lista "+list_videos.getModel().getSize());
             indx_repVideo++;
@@ -443,6 +451,7 @@ public class PanelYouTube extends javax.swing.JFrame {
     }
 
     public void ANTERIOR() {
+        stdRep = "stop";
         if (indx_repVideo > 0) {
             System.out.println("IDX cont: "+indx_repVideo+" IDX Lista "+list_videos.getModel().getSize());            
             indx_repVideo--;
@@ -457,6 +466,7 @@ public class PanelYouTube extends javax.swing.JFrame {
     }
     
     public void INGRESA_LISTA(List obj) {
+        indx_repVideo=0;
         l = new DefaultListModel();
         List lista = obj;
         Obj_listRepYT obj_litCli;
@@ -476,14 +486,30 @@ public class PanelYouTube extends javax.swing.JFrame {
         }
     }
     
+    public boolean setNivelVol(int nivel){
+        nivelSonido = nivel;
+        return player.setNivelVolAudio(nivel);
+    }
+    
+    int nivelSonido;
+    Obj_estadRep rep= new Obj_estadRep();
     public Obj_estadRep leer_estadoRep(){
-        Obj_estadRep rep= new Obj_estadRep();
-        String idV = urlVideo.substring(0, 32);
-        rep.setTema_actual(idV);
+        //String idV = urlVideo.substring(32, urlVideo.length());
+        //System.out.println(player.FinReproduccion());
+        if(player.FinReproduccion()){
+            stdRep = "stop";
+        }else{
+            stdRep = "play";
+        }
+        //rep.setTema_actual(idV);
+        nivelSonido=player.verNivelVolumen();
+        rep.setTema_actual(urlVideo);
         rep.setEstadoRep(stdRep); 
         rep.setEst_pantalla(stdoFS);
         rep.setEstado_lista(panel_listaRep.isVisible());
+        rep.setEst_panelvideo(this.isVisible());
         rep.setTiempo(player.verTiempoDuracion());
+        rep.setNivel_vol(nivelSonido);
         
         return rep;
     }

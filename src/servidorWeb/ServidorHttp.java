@@ -5,7 +5,9 @@
  */
 package servidorWeb;
 
+import Objetos.Obj_estadRep;
 import Objetos.Obj_listRepYT;
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -15,8 +17,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import okhttp3.HttpUrl;
+import org.json.simple.JSONObject;
 import video.PanelYouTube;
 
 /**
@@ -59,12 +63,14 @@ public class ServidorHttp{
         HttpContext ctxCmd = httpd.createContext("/cmd");
         HttpContext ctxCtrl = httpd.createContext("/ctrl");
         HttpContext ctxInfo = httpd.createContext("/info");
+        HttpContext ctxStatus = httpd.createContext("/status");
         HttpContext ctxCss = httpd.createContext("/css/audio_control.css");//audio_control.css
         //GENERA GETS
         ctxInit.setHandler(ServidorHttp::solicitudInit);
         ctxCmd.setHandler(ServidorHttp::solicitudCmd);
         ctxCtrl.setHandler(ServidorHttp::solicitudCtrl);
         ctxInfo.setHandler(ServidorHttp::solicitudInfo);
+        ctxStatus.setHandler(ServidorHttp::solicitudStatus);
         ctxCss.setHandler(ServidorHttp::solicitudCss);
     }
 
@@ -140,9 +146,13 @@ public class ServidorHttp{
                 break;
             case "prev_video" : accion="anterior_video";
                 break;
-            
             case "update_list" : accion="actualiza_lista";
                 break;
+            case "vol_val" : accion="actualiza_lista";
+                break;
+        }
+        if(filtraDat.contains("ctrl_")){
+            accion=filtraDat;
         }
         System.out.println("ServidorHttp: "+accion);
         String contenido = enviaJson("cmd",filtraDat);
@@ -154,10 +164,13 @@ public class ServidorHttp{
         os.write(contenido.getBytes());
         os.close();
     }
+    static boolean isControlVol=false;
     public static void solicitudCtrl(HttpExchange exchange) throws IOException{
         final int CODIGO_RESPUESTA = 200;
-        String filtraDat = filtrarSolicitud(exchange, "ctrl");//origen del ctrl
-        String contenido = enviaJson("ctrl",filtraDat);
+        nivel_volSonido = filtrarSolicitud(exchange, "ctrl_vol");//origen del ctrl
+        //System.out.println("Recive Nivel Audio:"+nivel_volSonido);
+        isControlVol=true;
+        String contenido = enviaJson("ctrl_vol",nivel_volSonido);
         
         exchange.getResponseHeaders().set("Content-Type", "application/json, charset=UTF-8");
         
@@ -175,6 +188,31 @@ public class ServidorHttp{
         objListYt = json.extraerListaRepYt(filtro);
         String contenido = enviaJson("info","ok");
         //System.out.println("Recibido:"+filtro);
+        
+        exchange.getResponseHeaders().set("Content-Type", "application/json, charset=UTF-8");
+        
+        exchange.sendResponseHeaders(CODIGO_RESPUESTA, contenido.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(contenido.getBytes());
+        os.close();
+    }
+    
+    static Obj_estadRep std_rep;
+    public static void solicitudStatus(HttpExchange exchange) throws IOException{
+        
+        final int CODIGO_RESPUESTA = 200;
+        String contenido="";
+        
+        String filtro = filtrarSolicitud(exchange, "consulta");
+        if(filtro.equals("ver_statusReproductor")){
+            //System.out.println("Funciona filtro");
+            Extractor_json json = new Extractor_json();
+            contenido = json.json_estado_reproductor(std_rep);
+        }
+        if(filtro.equals("ver_listaPuertos")){
+            contenido = generaListaPuertos();
+        }
+        
         
         exchange.getResponseHeaders().set("Content-Type", "application/json, charset=UTF-8");
         
@@ -230,6 +268,49 @@ public class ServidorHttp{
     }
     public void cleanListaRep(){
         objListYt = null;
+    }
+    
+    public void estadoReproductor(Obj_estadRep obj){
+        std_rep = obj;
+    }
+    
+    static String nivel_volSonido = "0";
+    public int nivel_vol(){
+//        System.out.println("Recive Nivel Audio:"+nivel_volSonido);
+        
+        try{
+            return Integer.parseInt(nivel_volSonido.trim());
+        }catch(NumberFormatException e){
+            return 0;
+        }
+    }
+    
+    public boolean isControlVolumen(){
+        if(isControlVol){
+            isControlVol = false;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    static String jsonListPort;
+    public void setListaPuertos(List puertos){
+        Gson g = new Gson();
+        jsonListPort = g.toJson(puertos);
+        System.out.println("Json Generado:"+jsonListPort);
+    }
+    private static String generaListaPuertos(){
+        return jsonListPort;
+        
+//        List listaItems = new ArrayList();
+//        JSONObject items = new JSONObject();
+//        for(int i=0; i<ListaPuertos.size();i++){
+//            items.clear();
+//            items.put(i, ListaPuertos.get(i));
+//            listaItems.add(items.toJSONString());
+//            System.out.println(listaItems.toString());
+//        }
+        //return json;
     }
 //    @Override
 //    public boolean panelYt_init(boolean STD) {

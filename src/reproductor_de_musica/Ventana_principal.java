@@ -1,7 +1,13 @@
 package reproductor_de_musica;
 
 import Objetos.Info_reproduccion;
+import com.panamahitek.ArduinoException;
+import com.panamahitek.PanamaHitek_Arduino;
+import control.Comunicacion_Arduino;
+import control.Comunicacion_ArduinoPHtek;
 import control.Monitor_control;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 import video.PanelYouTube;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -28,6 +34,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
+import jssc.SerialPortException;
 import servidorWeb.ServidorHttp;
 
 public class Ventana_principal extends javax.swing.JFrame {
@@ -40,6 +47,9 @@ public class Ventana_principal extends javax.swing.JFrame {
     private String ultimaLista = "vacio";
     private boolean cambios = false;
     protected boolean detenido = false;
+    
+    Comunicacion_Arduino com = new Comunicacion_Arduino();
+    //Comunicacion_ArduinoPHtek com2 = new Comunicacion_ArduinoPHtek();
     
     String urlVideo = "https://www.youtube.com/watch?v=MM0lWsvieaE";
     DefaultListModel l;
@@ -181,6 +191,8 @@ public class Ventana_principal extends javax.swing.JFrame {
         }
         return save.getAbsolutePath();
     }
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -197,13 +209,17 @@ public class Ventana_principal extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         nombre_can = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jSlider1 = new javax.swing.JSlider();
+        jLabel4 = new javax.swing.JLabel();
+        jSlider2 = new javax.swing.JSlider();
+        jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         siguiente = new javax.swing.JButton();
         play = new javax.swing.JButton();
         anterior = new javax.swing.JButton();
         info_spectro = new javax.swing.JLabel();
         info_cancion = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         bt_controlWeb = new javax.swing.JButton();
@@ -212,18 +228,19 @@ public class Ventana_principal extends javax.swing.JFrame {
         panel_control = new javax.swing.JPanel();
         tbt_ctrl1 = new javax.swing.JToggleButton();
         tbt_ctrl2 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
-        jToggleButton5 = new javax.swing.JToggleButton();
-        jToggleButton6 = new javax.swing.JToggleButton();
-        jToggleButton7 = new javax.swing.JToggleButton();
+        tbt_ctrl3 = new javax.swing.JToggleButton();
+        tbt_ctrl4 = new javax.swing.JToggleButton();
+        tbt_ctrl5 = new javax.swing.JToggleButton();
+        tbt_ctrl6 = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txt_consola = new javax.swing.JTextArea();
         panel_equalizador = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jSlider1 = new javax.swing.JSlider();
-        jSlider2 = new javax.swing.JSlider();
-        jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        cb_puerto = new javax.swing.JComboBox<>();
+        bt_conexionSerial = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         slidereq = new javax.swing.JSlider();
         slidereq1 = new javax.swing.JSlider();
@@ -320,8 +337,37 @@ public class Ventana_principal extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(0, 255, 36));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 0, 10)); // NOI18N
+        jLabel3.setText("- Volumen +");
+        jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 95, -1, -1));
+
+        jSlider1.setBackground(new java.awt.Color(0, 255, 36));
+        jSlider1.setValue(100);
+        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider1StateChanged(evt);
+            }
+        });
+        jPanel5.add(jSlider1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 105, 177, 18));
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 0, 10)); // NOI18N
+        jLabel4.setText("Der- Balance -Izq");
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 95, -1, -1));
+
+        jSlider2.setBackground(new java.awt.Color(0, 255, 36));
+        jSlider2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider2StateChanged(evt);
+            }
+        });
+        jPanel5.add(jSlider2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 105, 177, 18));
+
+        jLabel2.setFont(new java.awt.Font("LCDMono", 1, 24)); // NOI18N
+        jLabel2.setText("00:00:00");
+        jPanel5.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
+
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/musica2.gif"))); // NOI18N
-        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, -1, -1));
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, -1, -1));
 
         siguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/siguiente.png"))); // NOI18N
         siguiente.setToolTipText("");
@@ -333,7 +379,7 @@ public class Ventana_principal extends javax.swing.JFrame {
                 siguienteActionPerformed(evt);
             }
         });
-        jPanel5.add(siguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, -1, -1));
+        jPanel5.add(siguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, -1, -1));
 
         play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/play.png"))); // NOI18N
         play.setBorderPainted(false);
@@ -344,7 +390,7 @@ public class Ventana_principal extends javax.swing.JFrame {
                 playActionPerformed(evt);
             }
         });
-        jPanel5.add(play, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, -1, -1));
+        jPanel5.add(play, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, -1, -1));
 
         anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/anterior.png"))); // NOI18N
         anterior.setBorderPainted(false);
@@ -355,18 +401,14 @@ public class Ventana_principal extends javax.swing.JFrame {
                 anteriorActionPerformed(evt);
             }
         });
-        jPanel5.add(anterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+        jPanel5.add(anterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, -1, -1));
         jPanel5.add(info_spectro, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 515, 120));
 
         info_cancion.setFont(new java.awt.Font("LCDMono", 0, 16)); // NOI18N
         info_cancion.setText("Tema:");
         jPanel5.add(info_cancion, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 8, 397, -1));
 
-        jLabel2.setFont(new java.awt.Font("LCDMono", 1, 24)); // NOI18N
-        jLabel2.setText("00:00:00");
-        jPanel5.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
-
-        jButton1.setText("Youtube");
+        jButton1.setText("Video");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -374,6 +416,11 @@ public class Ventana_principal extends javax.swing.JFrame {
         });
 
         jButton2.setText("Config");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         bt_controlWeb.setText("App Web");
         bt_controlWeb.addActionListener(new java.awt.event.ActionListener() {
@@ -383,6 +430,11 @@ public class Ventana_principal extends javax.swing.JFrame {
         });
 
         jToggleButton1.setText("Equalizador");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         tbt_control.setText("Control");
         tbt_control.addActionListener(new java.awt.event.ActionListener() {
@@ -430,58 +482,64 @@ public class Ventana_principal extends javax.swing.JFrame {
 
         panel_control.setBorder(javax.swing.BorderFactory.createTitledBorder("Control"));
 
-        tbt_ctrl1.setText("Control 1");
+        tbt_ctrl1.setText("P1");
+        tbt_ctrl1.setEnabled(false);
         tbt_ctrl1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbt_ctrl1ActionPerformed(evt);
             }
         });
 
-        tbt_ctrl2.setText("Control 2");
+        tbt_ctrl2.setText("P2");
+        tbt_ctrl2.setEnabled(false);
         tbt_ctrl2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbt_ctrl2ActionPerformed(evt);
             }
         });
 
-        jToggleButton4.setText("Control 3");
-        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
+        tbt_ctrl3.setText("P3");
+        tbt_ctrl3.setEnabled(false);
+        tbt_ctrl3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton4ActionPerformed(evt);
+                tbt_ctrl3ActionPerformed(evt);
             }
         });
 
-        jToggleButton5.setText("Control 3");
-        jToggleButton5.addActionListener(new java.awt.event.ActionListener() {
+        tbt_ctrl4.setText("P4");
+        tbt_ctrl4.setEnabled(false);
+        tbt_ctrl4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton5ActionPerformed(evt);
+                tbt_ctrl4ActionPerformed(evt);
             }
         });
 
-        jToggleButton6.setText("Control 4");
-        jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
+        tbt_ctrl5.setText("P5");
+        tbt_ctrl5.setEnabled(false);
+        tbt_ctrl5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton6ActionPerformed(evt);
+                tbt_ctrl5ActionPerformed(evt);
             }
         });
 
-        jToggleButton7.setText("Control 5");
-        jToggleButton7.addActionListener(new java.awt.event.ActionListener() {
+        tbt_ctrl6.setText("P6");
+        tbt_ctrl6.setEnabled(false);
+        tbt_ctrl6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton7ActionPerformed(evt);
+                tbt_ctrl6ActionPerformed(evt);
             }
         });
 
         jScrollPane2.setBackground(new java.awt.Color(1, 1, 1));
         jScrollPane2.setForeground(new java.awt.Color(15, 255, 0));
 
-        jTextArea1.setBackground(new java.awt.Color(1, 1, 1));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(32, 255, 0));
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Consola:");
-        jScrollPane2.setViewportView(jTextArea1);
+        txt_consola.setBackground(new java.awt.Color(1, 1, 1));
+        txt_consola.setColumns(20);
+        txt_consola.setForeground(new java.awt.Color(32, 255, 0));
+        txt_consola.setLineWrap(true);
+        txt_consola.setRows(5);
+        txt_consola.setText("Consola:");
+        jScrollPane2.setViewportView(txt_consola);
 
         javax.swing.GroupLayout panel_controlLayout = new javax.swing.GroupLayout(panel_control);
         panel_control.setLayout(panel_controlLayout);
@@ -493,13 +551,13 @@ public class Ventana_principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tbt_ctrl2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbt_ctrl3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbt_ctrl4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbt_ctrl5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(tbt_ctrl6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panel_controlLayout.setVerticalGroup(
             panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -507,10 +565,10 @@ public class Ventana_principal extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_controlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbt_ctrl4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbt_ctrl5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbt_ctrl6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbt_ctrl3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tbt_ctrl1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tbt_ctrl2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -519,43 +577,52 @@ public class Ventana_principal extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(203, 212, 221));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Control Volumen"));
 
-        jSlider1.setValue(100);
-        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSlider1StateChanged(evt);
+        bt_conexionSerial.setText("Conectar");
+        bt_conexionSerial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_conexionSerialActionPerformed(evt);
             }
         });
 
-        jSlider2.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSlider2StateChanged(evt);
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("Balance");
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(jSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabel4)
-                .addGap(0, 121, Short.MAX_VALUE))
             .addComponent(jSeparator1)
+            .addComponent(cb_puerto, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bt_conexionSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton4))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cb_puerto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bt_conexionSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel1.setBackground(new java.awt.Color(187, 203, 215));
@@ -700,8 +767,8 @@ public class Ventana_principal extends javax.swing.JFrame {
         panel_equalizadorLayout.setHorizontalGroup(
             panel_equalizadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_equalizadorLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panel_equalizadorLayout.setVerticalGroup(
@@ -1118,8 +1185,7 @@ public class Ventana_principal extends javax.swing.JFrame {
 
     
     private void bt_controlWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_controlWebActionPerformed
-        String msg = mon.initServerWeb(this);
-        jTextArea1.append(msg);
+        mon.panelYt_full(true);
     }//GEN-LAST:event_bt_controlWebActionPerformed
 
     Monitor_control mon;
@@ -1127,41 +1193,99 @@ public class Ventana_principal extends javax.swing.JFrame {
         mon = new Monitor_control();
         mon.init_panel();
         String msg = mon.initServerWeb(this);
-        jTextArea1.append("\n"+msg);
+        txt_consola.append("\n"+msg);
+        initParametrosSerial();
     }//GEN-LAST:event_formWindowOpened
 
     private void tbt_ctrl1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl1ActionPerformed
-        mon.panelYt_verPnl(!tbt_ctrl1.isSelected());
-        /*if(tbt_ctrl1.isSelected()){
-            mon.panelYt_verPnl(tbt_ctrl1.isSelected());
+        if(tbt_ctrl1.isSelected()){
+            mon.envioDato("ctrl_p1=1");
         }else{
-            mon.panelYt_verPnl(false);
-        }*/
+            mon.envioDato("ctrl_p1=0");
+        }
     }//GEN-LAST:event_tbt_ctrl1ActionPerformed
 
     private void tbt_ctrl2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl2ActionPerformed
-        mon.panelYt_full(!tbt_ctrl2.isSelected());
+        if(tbt_ctrl2.isSelected()){
+            mon.envioDato("ctrl_p2=1");
+        }else{
+            mon.envioDato("ctrl_p2=0");
+        }
+        //com2.verificaPuertos();
     }//GEN-LAST:event_tbt_ctrl2ActionPerformed
 
-    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton4ActionPerformed
+    private void tbt_ctrl3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl3ActionPerformed
+        if(tbt_ctrl3.isSelected()){
+            mon.envioDato("ctrl_p3=1");
+        }else{
+            mon.envioDato("ctrl_p3=0");
+        }
+    }//GEN-LAST:event_tbt_ctrl3ActionPerformed
 
-    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton5ActionPerformed
+    private void tbt_ctrl4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl4ActionPerformed
+        if(tbt_ctrl4.isSelected()){
+            mon.envioDato("ctrl_p4=1");
+        }else{
+            mon.envioDato("ctrl_p4=0");
+        }
+    }//GEN-LAST:event_tbt_ctrl4ActionPerformed
 
-    private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton6ActionPerformed
+    private void tbt_ctrl5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl5ActionPerformed
+        if(tbt_ctrl5.isSelected()){
+            //mon.envioDato("E");
+            mon.envioDato("ctrl_p5=1");
+        }else{
+            mon.envioDato("ctrl_p5=0");
+        }
+    }//GEN-LAST:event_tbt_ctrl5ActionPerformed
 
-    private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton7ActionPerformed
+    private void tbt_ctrl6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_ctrl6ActionPerformed
+        if(tbt_ctrl6.isSelected()){
+            mon.envioDato("ctrl_p6=1");
+        }else{
+            mon.envioDato("ctrl_p6=0");
+        }
+    }//GEN-LAST:event_tbt_ctrl6ActionPerformed
 
     private void tbt_controlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbt_controlActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tbt_controlActionPerformed
+
+    private void bt_conexionSerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_conexionSerialActionPerformed
+        if(bt_conexionSerial.getText().equals("Conectar")){
+            if(cb_puerto.getSelectedItem()!=null){
+                //initSerial();
+                mon.envioDato("ctrl_iniSerial");
+                bt_conexionSerial.setText("Desconectar");
+                habilita(true);
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Selecione un Puerto");
+                cb_puerto.requestFocus();
+            }
+        }else{
+            mon.envioDato("ctrl_finSerial");
+            bt_conexionSerial.setText("Conectar");
+            mon.cierraConexionSerial();
+            habilita(false);
+        }
+    }//GEN-LAST:event_bt_conexionSerialActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        mon.panelYt_verPnl(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        mon.panelYt_full(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String p = cb_puerto.getSelectedItem().toString();
+        mon.envioDato("ctrl_port="+p);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public void stadoRep(){
         Info_reproduccion info = new Info_reproduccion();
@@ -1186,21 +1310,56 @@ public class Ventana_principal extends javax.swing.JFrame {
         return tmpIcon;
     }
     
+    
+    //****COMUNUICACION SERIAL*****//
+    public void setError(String error){
+        txt_consola.append(error);
+    }
+    
+    
+    private void initParametrosSerial(){
+        txt_consola.append("");
+        //com.buscarPuertos();
+        
+        for(int i=0;i<mon.ListaPuertos().size();i++){
+            cb_puerto.addItem(mon.ListaPuertos().get(i).toString());
+        }
+        
+    }
+    private void initSerial(){
+        if(cb_puerto.getSelectedItem()!=null){
+            String puerto = cb_puerto.getSelectedItem().toString();
+            //com2.initComunicacion(puerto, 9600, com2.getListener());
+            mon.envioDato(puerto);
+        }
+    }
+    
     public static void main(String args[]) {
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Ventana_principal().setVisible(true);
             }
         });
     }
+    
+    private void habilita(boolean std){
+        tbt_ctrl1.setEnabled(std);
+        tbt_ctrl2.setEnabled(std);
+        tbt_ctrl3.setEnabled(std);
+        tbt_ctrl4.setEnabled(std);
+        tbt_ctrl5.setEnabled(std);
+        tbt_ctrl6.setEnabled(std);
+        //tbt_ctrl7.setEnabled(std);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
     private javax.swing.JButton anterior;
+    private javax.swing.JButton bt_conexionSerial;
     private javax.swing.JButton bt_controlWeb;
     private javax.swing.JCheckBoxMenuItem cargarListaInicio;
     private javax.swing.JMenuItem cargar_lista;
+    private javax.swing.JComboBox<String> cb_puerto;
     private javax.swing.JButton detener;
     private javax.swing.JButton eliminar;
     private javax.swing.JMenuItem guardar_lista;
@@ -1208,8 +1367,11 @@ public class Ventana_principal extends javax.swing.JFrame {
     private javax.swing.JLabel info_spectro;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
@@ -1231,12 +1393,7 @@ public class Ventana_principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JSlider jSlider2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton4;
-    private javax.swing.JToggleButton jToggleButton5;
-    private javax.swing.JToggleButton jToggleButton6;
-    private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JList lista_can;
     private javax.swing.JTextField nombre_can;
     private javax.swing.JPanel panel_control;
@@ -1256,6 +1413,11 @@ public class Ventana_principal extends javax.swing.JFrame {
     private javax.swing.JToggleButton tbt_control;
     private javax.swing.JToggleButton tbt_ctrl1;
     private javax.swing.JToggleButton tbt_ctrl2;
+    private javax.swing.JToggleButton tbt_ctrl3;
+    private javax.swing.JToggleButton tbt_ctrl4;
+    private javax.swing.JToggleButton tbt_ctrl5;
+    private javax.swing.JToggleButton tbt_ctrl6;
     private javax.swing.JComboBox tipo_reproduccion;
+    public static javax.swing.JTextArea txt_consola;
     // End of variables declaration//GEN-END:variables
 }

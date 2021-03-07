@@ -10,9 +10,10 @@ package Objetos;
  * @author pablinux
  */
 public class Obj_estadRep {
-    String tema_actual,estadoRep;
+    boolean est_panelvideo,est_pantalla,estado_lista;
+    int nivel_vol;
     long tiempo;
-    boolean est_panel,est_pantalla,estado_lista;
+    String id_tema,tema_actual,estadoRep;
 
     public String getTema_actual() {
         return tema_actual;
@@ -20,6 +21,22 @@ public class Obj_estadRep {
 
     public void setTema_actual(String tema_actual) {
         this.tema_actual = tema_actual;
+    }
+
+    public int getNivel_vol() {
+        return nivel_vol;
+    }
+
+    public void setNivel_vol(int nivel_vol) {
+        this.nivel_vol = nivel_vol;
+    }
+
+    public String getId_tema() {
+        return id_tema;
+    }
+
+    public void setId_tema(String id_tema) {
+        this.id_tema = id_tema;
     }
 
     public String getEstadoRep() {
@@ -38,12 +55,12 @@ public class Obj_estadRep {
         this.tiempo = tiempo;
     }
 
-    public boolean isEst_panel() {
-        return est_panel;
+    public boolean isEst_panelvideo() {
+        return est_panelvideo;
     }
 
-    public void setEst_panel(boolean est_panel) {
-        this.est_panel = est_panel;
+    public void setEst_panelvideo(boolean est_panelvideo) {
+        this.est_panelvideo = est_panelvideo;
     }
 
     public boolean isEst_pantalla() {
@@ -61,6 +78,6 @@ public class Obj_estadRep {
     public void setEstado_lista(boolean estado_lista) {
         this.estado_lista = estado_lista;
     }
-
+    
     
 }
